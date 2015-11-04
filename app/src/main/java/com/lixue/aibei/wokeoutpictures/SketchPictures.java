@@ -3,13 +3,13 @@ package com.lixue.aibei.wokeoutpictures;
 import android.content.Context;
 import android.util.Log;
 
-/** Í¼Æ¬¼ÓÔØÆ÷£¬¿ÉÒÔ´ÓÍøÂç»òÕß±¾µØ¼ÓÔØÍ¼Æ¬£¬²¢ÇÒÖ§³Ö×Ô¶¯Çå³ı»º´æ
+/** å›¾ç‰‡åŠ è½½å™¨ï¼Œå¯ä»¥ä»ç½‘ç»œæˆ–è€…æœ¬åœ°åŠ è½½å›¾ç‰‡ï¼Œå¹¶ä¸”æ”¯æŒè‡ªåŠ¨æ¸…é™¤ç¼“å­˜
  *
  * Created by Administrator on 2015/11/3.
  */
 public class SketchPictures {
     public static  final String TAG = SketchPictures.class.getSimpleName();
-    private static boolean debugMode;   //µ÷ÊÔÄ£Ê½£¬ÔÚ¿ØÖÆÌ¨Êä³öÈÕÖ¾
+    private static boolean debugMode;   //è°ƒè¯•æ¨¡å¼ï¼Œåœ¨æ§åˆ¶å°è¾“å‡ºæ—¥å¿—
     public static SketchPictures instance;
     private Configuration configuration;
 
@@ -29,23 +29,23 @@ public class SketchPictures {
     }
 
     /**
-     * ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
-     * @return ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½£¬¿ªÆôµ÷ÊÔÄ£Ê½ºó»áÔÚ¿ØÖÆÌ¨Êä³öLOG
+     * æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+     * @return å¦å¼€å¯è°ƒè¯•æ¨¡å¼ï¼Œå¼€å¯è°ƒè¯•æ¨¡å¼åä¼šåœ¨æ§åˆ¶å°è¾“å‡ºLOG
      */
     public static boolean isDebugMode() {
         return debugMode;
     }
 
     /**
-     * ÉèÖÃÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
-     * @param debugMode ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½£¬¿ªÆôµ÷ÊÔÄ£Ê½ºó»áÔÚ¿ØÖÆÌ¨Êä³öLOG
+     * è®¾ç½®æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+     * @param debugMode å¦å¼€å¯è°ƒè¯•æ¨¡å¼ï¼Œå¼€å¯è°ƒè¯•æ¨¡å¼åä¼šåœ¨æ§åˆ¶å°è¾“å‡ºLOG
      */
     public static void setDebugMode(boolean debugMode) {
         SketchPictures.debugMode = debugMode;
     }
 
     /**
-     * »ñÈ¡ÅäÖÃ¶ÔÏó
+     * è·å–é…ç½®å¯¹è±¡
      * @return
      */
     public Configuration getConfiguration() {
@@ -53,7 +53,7 @@ public class SketchPictures {
     }
 
     /**
-     * ÉèÖÃÅäÖÃ¶ÔÏó
+     * è®¾ç½®é…ç½®å¯¹è±¡
      * @param configuration
      */
     public void setConfiguration(Configuration configuration) {

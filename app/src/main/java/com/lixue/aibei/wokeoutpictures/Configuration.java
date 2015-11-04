@@ -7,24 +7,25 @@ import com.lixue.aibei.wokeoutpictures.cache.DiskCache;
 import com.lixue.aibei.wokeoutpictures.cache.MemoryCache;
 
 /**
+ * é…ç½®æ–‡ä»¶
  * Created by Administrator on 2015/11/3.
  */
 public class Configuration {
     private static final String NAME = "Configuration";
     private Context context;
-    private DiskCache diskCache;    // ´ÅÅÌ»º´æÆ÷
-    private MemoryCache memoryCache;//Í¼Æ¬»º´æÆ÷
+    private DiskCache diskCache;    // ç£ç›˜ç¼“å­˜å™¨
+    private MemoryCache memoryCache;//å†…å­˜ç¼“å­˜å™¨
 
-    private boolean pauseLoad;   // ÔİÍ£¼ÓÔØĞÂÍ¼Æ¬£¬¿ªÆôºó½«Ö»´ÓÄÚ´æ»º´æÖĞÕÒÑ°Í¼Æ¬£¬Ö»Ó°ÏìdisplayÇëÇó
-    private boolean pauseDownload;   // ÔİÍ£ÏÂÔØĞÂÍ¼Æ¬£¬¿ªÆôºó½«²»ÔÙ´ÓÍøÂçÏÂÔØĞÂÍ¼Æ¬£¬Ö»Ó°ÏìdisplayÇëÇó
+    private boolean pauseLoad;   // æš‚åœåŠ è½½æ–°å›¾ç‰‡ï¼Œå¼€å¯åå°†åªä»å†…å­˜ç¼“å­˜ä¸­æ‰¾å¯»å›¾ç‰‡ï¼Œåªå½±å“displayè¯·æ±‚
+    private boolean pauseDownload;   // æš‚åœä¸‹è½½æ–°å›¾ç‰‡ï¼Œå¼€å¯åå°†ä¸å†ä»ç½‘ç»œä¸‹è½½æ–°å›¾ç‰‡ï¼Œåªå½±å“displayè¯·æ±‚
 
     public Configuration(Context context){
         this.context = context;
     }
 
     /**
-     * ÉèÖÃÔİÍ£ÏÂÔØÍ¼Æ¬£¬¿ªÆôºó½«²»ÔÙ´ÓÍøÂçÏÂÔØÍ¼Æ¬£¬Ö»Ó°ÏìdisplayÇëÇó
-     * @param pauseDownload ÔİÍ£ÏÂÔØÍ¼Æ¬£¬¿ªÆôºó½«²»ÔÙ´ÓÍøÂçÏÂÔØÍ¼Æ¬£¬Ö»Ó°ÏìdisplayÇëÇó
+     * è®¾ç½®æš‚åœä¸‹è½½å›¾ç‰‡ï¼Œå¼€å¯åå°†ä¸å†ä»ç½‘ç»œä¸‹è½½å›¾ç‰‡ï¼Œåªå½±å“displayè¯·æ±‚
+     * @param pauseDownload æš‚åœä¸‹è½½å›¾ç‰‡ï¼Œå¼€å¯åå°†ä¸å†ä»ç½‘ç»œä¸‹è½½å›¾ç‰‡ï¼Œåªå½±å“displayè¯·æ±‚
      */
     public Configuration setPauseDownload(boolean pauseDownload) {
         if(this.pauseDownload != pauseDownload){

@@ -20,8 +20,12 @@ import java.util.List;
  */
 public class SketchUtils {
     /**
-     * ½âÑ¹APKµÄÍ¼±ê
-     * @return
+     * è§£å‹APKçš„å›¾æ ‡
+     * @param context     ä¸Šä¸‹æ–‡
+     * @param apkFilePath apkè·¯å¾„
+     * @param lowQualityImage  æ˜¯å¦é«˜è´¨é‡
+     * @param logName
+     * @return  apkå›¾æ ‡
      */
     public static Bitmap decodeIconFromApk(Context context,String apkFilePath,boolean lowQualityImage,String logName){
         PackageManager packageManager = context.getPackageManager();
@@ -38,7 +42,7 @@ public class SketchUtils {
         return DrawableToBitmap(drawable,lowQualityImage);
     }
 
-    /**½²drawable×ª»»Îªbitmap¶ÔÏó
+    /**drawableè½¬æˆbitmap
      * @param drawable
      * @param lowQuality
      * @return
@@ -55,15 +59,15 @@ public class SketchUtils {
             Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), lowQuality ? Bitmap.Config.ARGB_4444 : Bitmap.Config.ARGB_8888);
 
             if (bitmap == null) return null;
-            // ½¨Á¢¶ÔÓ¦ bitmap µÄ»­²¼
+            // ç”»ä¸€å¼ bitmapç”»å¸ƒ
             Canvas canvas = new Canvas(bitmap);
-            // °Ñ drawable ÄÚÈİ»­µ½»­²¼ÖĞ
+            //å°†drawableç”»åœ¨ç”»å¸ƒä¸Š
             drawable.draw(canvas);
             return bitmap;
         }
     }
 
-    /** ´´½¨ÎÄ¼ş
+    /** åˆ›å»ºæ–‡ä»¶
      * @param file
      * @return true or false
      */
@@ -83,9 +87,10 @@ public class SketchUtils {
     }
 
     /**
-     * ¼ÆËãÎÄ¼ş³¤¶È£¬´Ë·½·¨µÄ¹Ø¼üµãÔÚÓÚ£¬ËûÒ²ÄÜ»ñÈ¡Ä¿Â¼µÄ³¤¶È
+     * è®¡ç®—æ–‡ä»¶é•¿åº¦ï¼Œæ­¤æ–¹æ³•çš„å…³é”®ç‚¹åœ¨äºï¼Œä»–ä¹Ÿèƒ½è·å–ç›®å½•çš„é•¿åº¦
      *
-     * @return length
+     * @param file    è¦è®¡ç®—çš„æ–‡ä»¶
+     * @return length é•¿åº¦
      */
     public static long countFileLength(File file){
         if (!file.exists()) return 0;
@@ -110,9 +115,9 @@ public class SketchUtils {
     }
 
     /**
-     * É¾³ı¸ø¶¨µÄÎÄ¼ş£¬Èç¹ûµ±Ç°ÎÄ¼şÊÇÄ¿Â¼Ôò»áÉ¾³ıÆä°üº¬µÄËùÓĞµÄÎÄ¼ş»òÄ¿Â¼
-     * @param file
-     * @return
+     * åˆ é™¤ç»™å®šçš„æ–‡ä»¶ï¼Œå¦‚æœå½“å‰æ–‡ä»¶æ˜¯ç›®å½•åˆ™ä¼šåˆ é™¤å…¶åŒ…å«çš„æ‰€æœ‰çš„æ–‡ä»¶æˆ–ç›®å½•
+     * @param file è¦è®¡ç®—çš„æ–‡ä»¶
+     * @return é•¿åº¦
      */
     public static boolean deleteFile(File file){
         if (!file.exists()) return true;
@@ -131,9 +136,9 @@ public class SketchUtils {
     }
 
     /**
-     * ¼ì²éÖ¸¶¨µÄÎÄ¼şÃûÊÇ·ñÓĞ´Ëºó×ºÃû
-     * @param name
-     * @param suffix
+     * æ£€æŸ¥æ‰©å±•åæ˜¯å¦åœ¨ç»™å®šçš„æ–‡ä»¶åé‡Œ
+     * @param name æ–‡ä»¶å
+     * @param suffix åç¼€
      * @return
      */
     public static boolean checkSuffix(String name,String suffix){
@@ -149,7 +154,7 @@ public class SketchUtils {
         return suffix.equalsIgnoreCase(tmpSuffix);
     }
 
-    /**×Ö·û´®Á¬½Ó
+    /**è¿æ¥å­—ç¬¦ä¸²
      * @param strings
      * @return
      */
@@ -163,7 +168,7 @@ public class SketchUtils {
     }
 
     /**
-     * ÖÆÍ¼£¨½«Ô­Í¼Ïñ´óĞ¡×ª±äÎªÄ¿±êÍ¼Ïñ´óĞ¡£©
+     * åˆ¶å›¾ï¼ˆå°†åŸå›¾ç”»ä¸ºç›®æ ‡å›¾åƒï¼‰
      * @param sourceWidth
      * @param sourceHeight
      * @param targetWidth
