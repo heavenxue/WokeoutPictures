@@ -3,6 +3,7 @@ package com.lixue.aibei.wokeoutpictures;
 import android.graphics.Bitmap;
 
 /**
+ * 文件格式
  * Created by Administrator on 2015/11/4.
  */
 public enum  ImageFormat {

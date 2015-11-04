@@ -18,6 +18,7 @@ public class Configuration {
 
     private boolean pauseLoad;   // 暂停加载新图片，开启后将只从内存缓存中找寻图片，只影响display请求
     private boolean pauseDownload;   // 暂停下载新图片，开启后将不再从网络下载新图片，只影响display请求
+    private boolean isDecodeGifImage = true;//是否解码Gif图像
 
     public Configuration(Context context){
         this.context = context;
@@ -35,6 +36,33 @@ public class Configuration {
                 builder.append(NAME).append(": ").append("set").append(" - ");
                 builder.append("pauseDownload").append(" (");
                 builder.append(pauseDownload);
+                builder.append(")");
+                Log.i(SketchPictures.TAG, builder.toString());
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 是否解码GIF图
+     * @return true：解码；false：不解码
+     */
+    public boolean isDecodeGifImage() {
+        return isDecodeGifImage;
+    }
+
+    /**
+     * 设置是否解码GIF图
+     * @param decodeGifImage true：解码；false：不解码
+     */
+    public Configuration setIsDecodeGifImage(boolean decodeGifImage) {
+        if(this.isDecodeGifImage != decodeGifImage){
+            this.isDecodeGifImage = decodeGifImage;
+            if(SketchPictures.isDebugMode()){
+                StringBuilder builder = new StringBuilder();
+                builder.append(NAME).append(": ").append("set").append(" - ");
+                builder.append("decodeGifImage").append(" (");
+                builder.append(decodeGifImage);
                 builder.append(")");
                 Log.i(SketchPictures.TAG, builder.toString());
             }

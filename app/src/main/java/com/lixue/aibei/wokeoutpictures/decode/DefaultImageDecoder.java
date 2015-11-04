@@ -62,6 +62,33 @@ public class DefaultImageDecoder implements ImageDecoder{
         //通过文件类型设置最好的图像配置
         loadRequest.setMimeType(options.outMimeType);
         ImageFormat imageFormat = ImageFormat.valueOf(loadRequest.getMimeType());
+        if(imageFormat != null){
+            options.inPreferredConfig = imageFormat.getConfig(loadRequest.isLowQualityImage());
+        }
+        //decode gif pictures
+        if (imageFormat != null && loadRequest.isDecodeGifImage() && imageFormat == ImageFormat.GIF){
+            try {
+                return decodeHelper.getGifDrawable();
+                //本地没有发现so库异常
+                // which an implementation could not be found.
+            }catch (UnsatisfiedLinkError e){
+                Log.e(SketchPictures.TAG, "Didn't find “libpl_droidsonroids_gif.so” file, unable to process the GIF images, has automatically according to the common image decoding, and has set up a closed automatically decoding GIF image feature. If you need to decode the GIF figure please go to “https://github.com/xiaopansky/sketch” to download “libpl_droidsonroids_gif.so” file and put in your project");
+                loadRequest.getSketch().getConfiguration().setIsDecodeGifImage(false);
+                e.printStackTrace();
+                //初始化异常
+            }catch (ExceptionInInitializerError e){
+                Log.e(SketchPictures.TAG, "Didn't find “libpl_droidsonroids_gif.so” file, unable to process the GIF images, has automatically according to the common image decoding, and has set up a closed automatically decoding GIF image feature. If you need to decode the GIF figure please go to “https://github.com/xiaopansky/sketch” to download “libpl_droidsonroids_gif.so” file and put in your project");
+                loadRequest.getSketch().getConfiguration().setIsDecodeGifImage(false);
+                e.printStackTrace();
+            }catch (Throwable e){
+                Log.e(SketchPictures.TAG, "When decoding GIF figure some unknown exception, has shut down automatically GIF picture decoding function");
+                loadRequest.getSketch().getConfiguration().setIsDecodeGifImage(false);
+                e.printStackTrace();
+            }
+        }
+        //decode normal image
+
+
         return null;
     }
 
