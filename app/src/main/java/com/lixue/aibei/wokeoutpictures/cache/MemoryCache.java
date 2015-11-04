@@ -2,45 +2,50 @@ package com.lixue.aibei.wokeoutpictures.cache;
 
 import android.graphics.drawable.Drawable;
 
-/**ÄÚ´æ»º´æÆ÷
+/**å†…å­˜ç¼“å­˜å™¨
  * Created by Administrator on 2015/11/3.
  */
 public interface MemoryCache {
-    /**·Å½øÈ¥Ò»ÕÅÍ¼Æ¬
-     * @param key ¼ü
-     * @param value Öµ
+    /**æ”¾è¿›å»ä¸€å¼ å›¾ç‰‡
+     * @param key é”®
+     * @param value å€¼Öµ
      */
     void put(String key,Drawable value);
 
-    /**¸ù¾İÖ¸¶¨µÄkey»ñÈ¡Í¼Æ¬
+    /**æ ¹æ®ç»™å®šçš„keyè·å–å›¾ç‰‡
      * @param key
      * @return
      */
     Drawable get(String key);
 
-    /**¸ù¾İÖ¸¶¨µÄkeyÉ¾³ıÍ¼Æ¬
+    /**æ ¹æ®ç»™å®šçš„keyåˆ é™¤å›¾ç‰‡
      * @param key
      * @return
      */
     Drawable remove(String key);
 
-    /**»ñÈ¡ÒÑÓÃÈİÁ¿
-     * @return ÒÑÓÃÈİÁ¿
+    /**è·å–å·²ç”¨å®¹é‡
+     * @return å·²ç”¨å®¹é‡
      */
     long getSize();
 
-    /**»ñÈ¡×î´óÈİÁ¿
-     * @return ×î´óÈİÁ¿
+    /**è·å–æœ€å¤§å®¹é‡
+     * @return æœ€å¤§å®¹é‡
      */
     long getMaxSize();
 
     /**
-     * Çå³ıÄÚ´æ»º´æ
+     * æ¸…é™¤å†…å­˜ç¼“å­˜
      */
     void clear();
+    /**
+     * è·å–æ ‡è¯†ç¬¦
+     * @return æ ‡è¯†ç¬¦
+     */
+    String getIdentifier();
 
-    /**×·¼Ó±êÊ¶·û
-     * @param stringBuilder
+    /** è¿½åŠ æ ‡è¯†ç¬¦
+     * @param stringBuilder æ ‡è¯†ç¬¦
      * @return
      */
     StringBuilder appendIdentifier(StringBuilder stringBuilder);

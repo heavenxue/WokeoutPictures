@@ -10,7 +10,7 @@ import android.net.NetworkInfo;
 import com.lixue.aibei.wokeoutpictures.SketchPictures;
 
 /**
- * 移动网络下暂停下载新图片管理器
+ * 绉诲姩缃戠粶涓嬫殏鍋滀笅杞藉浘鐗囩鐞嗗櫒
  * Created by Administrator on 2015/11/3.
  */
 public class MobileNetworkPauseDownloadManager {

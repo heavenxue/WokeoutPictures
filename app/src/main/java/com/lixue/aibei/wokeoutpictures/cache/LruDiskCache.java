@@ -21,7 +21,7 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Comparator;
 
-/** Ä¬ÈÏÊµÏÖµÄ´ÅÅÌ»º´æÆ÷
+/** é»˜è®¤å®ç°çš„ç£ç›˜ç¼“å­˜å™¨
  * Created by Administrator on 2015/11/3.
  */
 public class LruDiskCache implements DiskCache {
@@ -30,11 +30,11 @@ public class LruDiskCache implements DiskCache {
     private static final int DEFAULT_RESERVE_SIZE = 100 * 1024 * 1024 ;
     private static final int DEFUALT_MAX_SIZE = 100 * 1024 * 1024 ;
 
-    private File cacheDir;//»º´æÄ¿Â¼
-    private Context context;//ÉÏÏÂÎÄ
+    private File cacheDir;//ç¼“å­˜ç›®å½•
+    private Context context;//ä¸Šä¸‹æ–‡
     private FileLastModifiedComparator fileLastModifiedComparator;
-    private int reserveSize = DEFAULT_RESERVE_SIZE;//±£Áô¿Õ¼ä
-    private int maxSize = DEFUALT_MAX_SIZE;//×î´ó¿Õ¼ä
+    private int reserveSize = DEFAULT_RESERVE_SIZE;//ä¿ç•™ç©ºé—´
+    private int maxSize = DEFUALT_MAX_SIZE;//æœ€å¤§ç©ºé—´
 
     public LruDiskCache(Context context,File cacheDir){
         this.context = context;
@@ -74,25 +74,25 @@ public class LruDiskCache implements DiskCache {
         if (finalCacheDir == null){
             return false;
         }
-        //sd¿¨¿ÉÓÃ¿Õ¼ä
+        //è·å–SDå¡ç£ç›˜æ•´ä¸ªç©ºé—´å¤§å°
         long totalAvailableSize = Math.abs(getAvailableSize(finalCacheDir.getPath()));
         long usedSize = 0;
-        //Èç¹ûÊ£Óà¿Õ¼ä¹»ÓÃ
+        //å¦‚æœå‰©ä½™ç©ºé—´å¤Ÿç”¨
         if(totalAvailableSize - reserveSize > length){
             if (maxSize > 0 ){
                 usedSize = Math.abs(SketchUtils.countFileLength(finalCacheDir));
                 if (length + usedSize < maxSize) return true;
             }else return true;
         }
-        //»ñÈ¡ËùÓĞ»º´æÎÄ¼ş
+        //è·å–æ‰€æœ‰ç¼“å­˜æ–‡ä»¶
         File[] files = null;
         if (finalCacheDir.exists()){
             files = finalCacheDir.listFiles();
         }
         if (files != null && files.length > 0){
-            //ÏÈ°´ÕÕ×îºóĞŞ¸ÄÊ±¼äÅÅĞò
+            //æŠŠæ‰€æœ‰æ–‡ä»¶æŒ‰ç…§æœ€åä¿®æ”¹æ—¥æœŸæ’åº
             Arrays.sort(files,fileLastModifiedComparator);
-            // È»ºó°´ÕÕË³ĞòÀ´É¾³ıÎÄ¼şÖ±µ½ÌÚ³ö×ã¹»µÄ¿Õ¼ä»òÎÄ¼şÉ¾ÍêÎªÖ¹
+            //ç„¶åæŒ‰ç…§é¡ºåºæ¥åˆ é™¤æ–‡ä»¶ç›´åˆ°è…¾å‡ºè¶³å¤Ÿçš„ç©ºé—´æˆ–æ–‡ä»¶åˆ å®Œä¸ºæ­¢
             for (File fl : files){
                 if(SketchPictures.isDebugMode()){
                     Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "deleted cache file", " - ", fl.getPath()));
@@ -112,9 +112,9 @@ public class LruDiskCache implements DiskCache {
             }
         }
 
-        // ·µ»ØÉêÇë¿Õ¼äÊ§°Ü
+        // è¿”å›ç”³è¯·ç©ºé—´å¤±è´¥
         if(SketchPictures.isDebugMode()){
-            Log.e(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "apply for space failed", " - ", "remaining space£º", Formatter.formatFileSize(context, totalAvailableSize), "; reserve size£º", Formatter.formatFileSize(context, reserveSize), " - ", finalCacheDir.getPath()));
+            Log.e(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "apply for space failed", " - ", "remaining spaceï¿½ï¿½", Formatter.formatFileSize(context, totalAvailableSize), "; reserve sizeï¿½ï¿½", Formatter.formatFileSize(context, reserveSize), " - ", finalCacheDir.getPath()));
         }
         return false;
     }
@@ -126,7 +126,7 @@ public class LruDiskCache implements DiskCache {
 
     @Override
     public synchronized File getCacheDir() {
-        // Ê×ÏÈ³¢ÊÔÊ¹ÓÃcacheDir²ÎÊıÖ¸¶¨µÄÎ»ÖÃ
+        // ï¿½ï¿½ï¿½È³ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½cacheDirï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         if (cacheDir != null){
             if (cacheDir.exists() || cacheDir.mkdirs()){
                 return cacheDir;
@@ -135,8 +135,8 @@ public class LruDiskCache implements DiskCache {
             }
         }
         File superDir;
-        //È»ºó³¢ÊÔÊ¹ÓÃSD¿¨µÄÄ¬ÈÏ»º´æÎÄ¼ş¼Ğ
-        //android°æ±¾ºÅ´óÓÚandroid2.2Ê±
+        //é¦–å…ˆå°è¯•ä½¿ç”¨cacheDirå‚æ•°æŒ‡å®šçš„ä½ç½®
+        //androidç‰ˆæœ¬å·å¤§äºç­‰äºandroid2.2ç‰ˆæœ¬
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO){
             superDir = context.getExternalCacheDir();
             if(superDir != null){
@@ -146,7 +146,7 @@ public class LruDiskCache implements DiskCache {
                 }
             }
         }
-        // ×îºó³¢ÊÔÊ¹ÓÃÏµÍ³µÄÄ¬ÈÏ»º´æÎÄ¼ş¼Ğ
+        // ç„¶åå°è¯•ä½¿ç”¨SDå¡çš„é»˜è®¤ç¼“å­˜æ–‡ä»¶å¤¹
         superDir = context.getCacheDir();
         if (superDir != null){
             cacheDir = new File(superDir,DEFAULT_DIRECTORY_NAME);
@@ -235,32 +235,32 @@ public class LruDiskCache implements DiskCache {
         if (bitmap == null || bitmap.isRecycled()){
             return null;
         }
-        File cachefile = generateCacheFile(uri);//¸ù¾İuriÉú³É»º´æÎÄ¼ş
+        File cachefile = generateCacheFile(uri);//ï¿½ï¿½ï¿½ï¿½uriï¿½ï¿½ï¿½É»ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
         if (cachefile == null) return null;
-        //ÉêÇë¿Õ¼ä
-        //Èç¹ûandroidÏµÍ³´óÓÚ4.4£¬ÓÃÆäËûµÄÌØ¶¨µÄ·½·¨»ñÈ¡Ä¿Â¼
+        //ç”³è¯·ç©ºé—´
+        //æ‰‹æœºç³»ç»Ÿandroidç‰ˆæœ¬å·å¤§äºadnroid4.4ç‰ˆæœ¬
         int applySize;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
             applySize = bitmap.getAllocationByteCount();
         }else if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1){
-            //Èç¹û´óÓÚandroid3.1
+            //ç‰ˆæœ¬å·å¤§äºandroid3.1
             applySize = bitmap.getByteCount();
         }else{
             applySize = bitmap.getRowBytes() * bitmap.getHeight();
         }
         if (!applyForSpace(applySize)) return null;
         File tmpFile = new File(cachefile.getPath()+".temp");
-        //´´½¨ÎÄ¼ş
+        //åˆ›å»ºæ–‡ä»¶å¤±è´¥
         if (!SketchUtils.CreateFile(tmpFile)){
             if (SketchPictures.isDebugMode()) {
                 Log.e(SketchPictures.TAG, SketchUtils.concat(NAME, "create file failed", " - ", tmpFile.getPath()));
             }
             return null;
         }
-        //Ğ´³ö£¬½«bitmapÒÔÁ÷µÄĞÎÊ½Ğ´Èëµ½tmpFile
+        //å†™å‡ºï¼Œå°†bitmapè¾“å‡ºæµå†™å…¥åˆ°tmpfileæ–‡ä»¶ä¸­
         OutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(tmpFile,false);//²»×·¼ÓÊä³öÁ÷
+            outputStream = new FileOutputStream(tmpFile,false);//ï¿½ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
             try {
                 outputStream.close();
@@ -313,7 +313,7 @@ public class LruDiskCache implements DiskCache {
         return stringBuilder;
     }
     /**
-     * ÎÄ¼ş×îºóĞŞ¸ÄÈÕÆÚ±È½ÏÆ÷
+     * æ–‡ä»¶æœ€åä¿®æ”¹æ—¥æœŸæ¯”è¾ƒå™¨
      */
     public static class FileLastModifiedComparator implements Comparator<File> {
         @Override
@@ -330,8 +330,8 @@ public class LruDiskCache implements DiskCache {
         }
     }
     /**
-     * »ñÈ¡SD¿¨¿ÉÓÃÈİÁ¿
-     * @param path Â·¾¶
+     *è·å–SDå¡å¯ç”¨å®¹é‡
+     * @param path Â·ï¿½ï¿½
      */
     @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
