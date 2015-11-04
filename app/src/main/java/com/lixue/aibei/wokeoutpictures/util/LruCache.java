@@ -10,14 +10,14 @@ public class LruCache<K, V> {
     private final LinkedHashMap<K, V> map;
 
     /** Size of this cache in units. Not necessarily the number of elements. */
-    private int size;
-    private int maxSize;
+    private int size;//当前大小
+    private int maxSize;//最大容量
 
-    private int putCount;
-    private int createCount;
-    private int evictionCount;
-    private int hitCount;
-    private int missCount;
+    private int putCount;//put次数
+    private int createCount;//创建次数
+    private int evictionCount;//回收次数
+    private int hitCount;//命中次数
+    private int missCount;//丢失次数
 
     /**
      * @param maxSize for caches that do not override {@link #sizeOf}, this is
@@ -93,25 +93,25 @@ public class LruCache<K, V> {
      * @return the previous value mapped by {@code key}.
      */
     public V put(K key, V value) {
-        if (key == null || value == null) {
+        if (key == null || value == null) {//键值不允许为空
             throw new NullPointerException("key == null || value == null");
         }
 
         V previous;
-        synchronized (this) {
+        synchronized (this) {//线程安全
             putCount++;
             size += safeSizeOf(key, value);
             previous = map.put(key, value);
-            if (previous != null) {
-                size -= safeSizeOf(key, previous);
+            if (previous != null) {//之前已经插入过相同的key
+                size -= safeSizeOf(key, previous);//那么减去该entry的容量，因为发生覆盖
             }
         }
 
         if (previous != null) {
-            entryRemoved(false, key, previous, value);
+            entryRemoved(false, key, previous, value);//这个方法默认空实现
         }
 
-        trimToSize(maxSize);
+        trimToSize(maxSize);//若容量超过maxsize，将会删除最近很少访问的entry
         return previous;
     }
 
@@ -123,7 +123,7 @@ public class LruCache<K, V> {
      *            to evict even 0-sized elements.
      */
     public void trimToSize(int maxSize) {
-        while (true) {
+        while (true) {//不断删除linkedHashMap头部entry，也就是最近最少访问的条目，直到size小于最大容量
             K key;
             V value;
             synchronized (this) {
@@ -132,14 +132,14 @@ public class LruCache<K, V> {
                             + ".sizeOf() is reporting inconsistent results!");
                 }
 
-                if (size <= maxSize || map.isEmpty()) {
+                if (size <= maxSize || map.isEmpty()) {//直到容量小于最大容量为止
                     break;
                 }
 
-                Map.Entry<K, V> toEvict = map.entrySet().iterator().next();
+                Map.Entry<K, V> toEvict = map.entrySet().iterator().next();//指向链表头
                 key = toEvict.getKey();
                 value = toEvict.getValue();
-                map.remove(key);
+                map.remove(key);//删除最少访问的entry
                 size -= safeSizeOf(key, value);
                 evictionCount++;
             }
@@ -160,7 +160,7 @@ public class LruCache<K, V> {
 
         V previous;
         synchronized (this) {
-            previous = map.remove(key);
+            previous = map.remove(key);//调用LinkedHashMap的remove方法
             if (previous != null) {
                 size -= safeSizeOf(key, previous);
             }
@@ -221,7 +221,7 @@ public class LruCache<K, V> {
      * Returns the size of the entry for {@code key} and {@code value} in
      * user-defined units.  The default implementation returns 1 so that size
      * is the number of entries and max size is the maximum number of entries.
-     *
+     *这个方法用于计算每个条目的大小，子类必须得复写这个类。
      * <p>An entry's size must not change while it is in the cache.
      */
     public int sizeOf(K key, V value) {
