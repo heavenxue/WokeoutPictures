@@ -140,7 +140,7 @@ public class LruDiskCache implements DiskCache {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO){
             //通过Context.getExternalFilesDir()方法可以获取到 SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
             //通过Context.getExternalCacheDir()方法可以获取到 SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
-            //这样当该应用被卸载后，这些数据还保留在SDCard中，留下了垃圾数据
+            //有sd卡存在的时候
             superDir = context.getExternalCacheDir();
             if(superDir != null){
                 cacheDir = new File(superDir, DEFAULT_DIRECTORY_NAME);
@@ -151,7 +151,7 @@ public class LruDiskCache implements DiskCache {
         }
         // 然后尝试使用SD卡的默认缓存文件夹,getCacheDir()方法用于获取/data/data/<application package>/cache目录
         //getFilesDir()方法用于获取/data/data/<application package>/files目录
-        //卸载后数据也会被清除
+        //没有sd卡存在的时候
         superDir = context.getCacheDir();
         if (superDir != null){
             cacheDir = new File(superDir,DEFAULT_DIRECTORY_NAME);

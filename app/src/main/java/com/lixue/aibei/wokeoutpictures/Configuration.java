@@ -5,7 +5,10 @@ import android.util.Log;
 
 import com.lixue.aibei.wokeoutpictures.cache.DiskCache;
 import com.lixue.aibei.wokeoutpictures.cache.LruDiskCache;
+import com.lixue.aibei.wokeoutpictures.cache.LruMemoryCache;
 import com.lixue.aibei.wokeoutpictures.cache.MemoryCache;
+import com.lixue.aibei.wokeoutpictures.decode.DefaultImageDecoder;
+import com.lixue.aibei.wokeoutpictures.decode.ImageDecoder;
 
 /**
  * 配置文件
@@ -16,6 +19,8 @@ public class Configuration {
     private Context context;
     private DiskCache diskCache;    // 磁盘缓存器
     private MemoryCache memoryCache;//内存缓存器
+    private ImageDecoder imageDecoder;//图片解码器
+    private HelperFactory helperFactory;    // 协助器工厂
 
     private boolean pauseLoad;   // 暂停加载新图片，开启后将只从内存缓存中找寻图片，只影响display请求
     private boolean pauseDownload;   // 暂停下载新图片，开启后将不再从网络下载新图片，只影响display请求
@@ -28,6 +33,9 @@ public class Configuration {
     public Configuration(Context context){
         this.context = context.getApplicationContext();
         diskCache = new LruDiskCache(context);
+        //将最大内存的八分之一作为内存缓存的最大存储空间
+        memoryCache = new LruMemoryCache(context,(int) (Runtime.getRuntime().maxMemory()/8));
+        imageDecoder = new DefaultImageDecoder();
     }
 
     /**

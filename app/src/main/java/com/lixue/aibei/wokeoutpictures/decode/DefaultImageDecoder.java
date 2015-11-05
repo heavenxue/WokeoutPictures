@@ -88,6 +88,7 @@ public class DefaultImageDecoder implements ImageDecoder{
         /**
          * 实现步骤：
          * 第一步：BitmapFactory.Option 设置 inJustDecodeBounds为true
+         * 值设为true那么将不返回实际的bitmap，也不给其分配内存空间这样就避免内存溢出了。但是允许我们查询图片的信息这其中就包括图片大小信息
          * 第二步：BitmapFactory.decodeFile(path,option)方法
          * 解码图片路径为一个位图。如果指定的文件名是空的,或者不能解码到一个位图,函数将返回null[空值]。
          * 获取到outHeight(图片原始高度)和 outWidth(图片的原始宽度)
