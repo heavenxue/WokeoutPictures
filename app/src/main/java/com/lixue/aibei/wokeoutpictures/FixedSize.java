@@ -1,5 +1,8 @@
 package com.lixue.aibei.wokeoutpictures;
 
+/**
+ * 固定大小
+ */
 public class FixedSize implements ImageSize{
     private int width;
     private int height;

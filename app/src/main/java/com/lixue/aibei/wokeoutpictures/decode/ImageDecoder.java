@@ -22,5 +22,5 @@ public interface ImageDecoder {
      * @param stringBuilder
      * @return
      */
-    String appendIndentifier(StringBuilder stringBuilder);
+    StringBuilder appendIndentifier(StringBuilder stringBuilder);
 }

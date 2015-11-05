@@ -47,6 +47,10 @@ public class Configuration {
         return this;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     /**
      * 是否解码GIF图
      * @return true：解码；false：不解码
