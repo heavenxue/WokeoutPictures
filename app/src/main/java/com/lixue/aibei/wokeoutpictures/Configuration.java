@@ -19,6 +19,10 @@ public class Configuration {
     private boolean pauseLoad;   // 暂停加载新图片，开启后将只从内存缓存中找寻图片，只影响display请求
     private boolean pauseDownload;   // 暂停下载新图片，开启后将不再从网络下载新图片，只影响display请求
     private boolean isDecodeGifImage = true;//是否解码Gif图像
+    private ImageSizeCalculator imageSizeCalculator ;
+    private MemoryCache placeholderImageMemoryCache;
+    private boolean isLowQualityImage;
+
 
     public Configuration(Context context){
         this.context = context;
@@ -69,4 +73,15 @@ public class Configuration {
         }
         return this;
     }
+    public ImageSizeCalculator getImageSizeCalculator(){
+        return  imageSizeCalculator;
+    }
+
+    public MemoryCache getPlaceholderImageMemoryCache(){
+        return placeholderImageMemoryCache;
+    }
+    public boolean isLowQualityImage(){
+        return isLowQualityImage;
+    }
+
 }
