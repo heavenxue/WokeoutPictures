@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.lixue.aibei.wokeoutpictures.cache.DiskCache;
+import com.lixue.aibei.wokeoutpictures.cache.LruDiskCache;
 import com.lixue.aibei.wokeoutpictures.cache.MemoryCache;
 
 /**
@@ -25,7 +26,8 @@ public class Configuration {
 
 
     public Configuration(Context context){
-        this.context = context;
+        this.context = context.getApplicationContext();
+        diskCache = new LruDiskCache(context);
     }
 
     /**

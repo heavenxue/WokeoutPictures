@@ -28,13 +28,13 @@ public class LruDiskCache implements DiskCache {
     private static final String NAME = "LruDiskCache";
     private static final String DEFAULT_DIRECTORY_NAME = "SketchPictures";
     private static final int DEFAULT_RESERVE_SIZE = 100 * 1024 * 1024 ;
-    private static final int DEFUALT_MAX_SIZE = 100 * 1024 * 1024 ;
+    private static final int DEFAULT_MAX_SIZE = 100 * 1024 * 1024 ;
 
     private File cacheDir;//缓存目录
     private Context context;//上下文
     private FileLastModifiedComparator fileLastModifiedComparator;
     private int reserveSize = DEFAULT_RESERVE_SIZE;//保留空间
-    private int maxSize = DEFUALT_MAX_SIZE;//最大空间
+    private int maxSize = DEFAULT_MAX_SIZE;//最大空间
 
     public LruDiskCache(Context context,File cacheDir){
         this.context = context;
@@ -126,7 +126,7 @@ public class LruDiskCache implements DiskCache {
 
     @Override
     public synchronized File getCacheDir() {
-        // ���ȳ���ʹ��cacheDir����ָ����λ��
+        // 首先尝试使用cacheDir参数指定的位置
         if (cacheDir != null){
             if (cacheDir.exists() || cacheDir.mkdirs()){
                 return cacheDir;
@@ -138,6 +138,9 @@ public class LruDiskCache implements DiskCache {
         //首先尝试使用cacheDir参数指定的位置
         //android版本号大于等于android2.2版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO){
+            //通过Context.getExternalFilesDir()方法可以获取到 SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
+            //通过Context.getExternalCacheDir()方法可以获取到 SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
+            //这样当该应用被卸载后，这些数据还保留在SDCard中，留下了垃圾数据
             superDir = context.getExternalCacheDir();
             if(superDir != null){
                 cacheDir = new File(superDir, DEFAULT_DIRECTORY_NAME);
@@ -146,7 +149,9 @@ public class LruDiskCache implements DiskCache {
                 }
             }
         }
-        // 然后尝试使用SD卡的默认缓存文件夹
+        // 然后尝试使用SD卡的默认缓存文件夹,getCacheDir()方法用于获取/data/data/<application package>/cache目录
+        //getFilesDir()方法用于获取/data/data/<application package>/files目录
+        //卸载后数据也会被清除
         superDir = context.getCacheDir();
         if (superDir != null){
             cacheDir = new File(superDir,DEFAULT_DIRECTORY_NAME);
