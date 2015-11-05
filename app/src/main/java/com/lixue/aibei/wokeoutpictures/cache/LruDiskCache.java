@@ -235,7 +235,7 @@ public class LruDiskCache implements DiskCache {
         if (bitmap == null || bitmap.isRecycled()){
             return null;
         }
-        File cachefile = generateCacheFile(uri);//����uri���ɻ����ļ�
+        File cachefile = generateCacheFile(uri);//根据uri生成缓存文件
         if (cachefile == null) return null;
         //申请空间
         //手机系统android版本号大于adnroid4.4版本
@@ -260,7 +260,7 @@ public class LruDiskCache implements DiskCache {
         //写出，将bitmap输出流写入到tmpfile文件中
         OutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(tmpFile,false);//��׷�������
+            outputStream = new FileOutputStream(tmpFile,false);//将tmpFile生成文件输出流
             bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
             try {
                 outputStream.close();
@@ -331,7 +331,7 @@ public class LruDiskCache implements DiskCache {
     }
     /**
      *获取SD卡可用容量
-     * @param path ·��
+     * @param path ·文件路径
      */
     @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
