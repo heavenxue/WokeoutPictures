@@ -3,6 +3,8 @@ package com.lixue.aibei.wokeoutpictures;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Map;
+
 /** 图片加载器，可以从网络或者本地加载图片，并且支持自动清除缓存
  *
  * Created by Administrator on 2015/11/3.
@@ -12,6 +14,7 @@ public class SketchPictures {
     private static boolean debugMode;   //调试模式，在控制台输出日志
     public static SketchPictures instance;
     private Configuration configuration;
+    public static Map<Enum<?>,RequestOptions> optionsMap;//请求选项集
 
 
 
@@ -27,6 +30,18 @@ public class SketchPictures {
         }
         return instance;
     }
+
+    /**
+     * 获取选项
+     * @param optionsName 选项名称
+     * @return 选项
+     */
+     public static RequestOptions getOptions(Enum<?> optionsName){
+         if(optionsMap == null){
+             return null;
+         }
+         return optionsMap.get(optionsName);
+     }
 
     /**
      * 是否开启调试模式

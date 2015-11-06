@@ -5,19 +5,30 @@ package com.lixue.aibei.wokeoutpictures;
  * Created by Administrator on 2015/11/5.
  */
 public class DefaultHelperFactory implements HelperFactory {
+    private static final String NAME = "DefaultHelperFactory";
+    private DisplayHelper displayHelper;
+
+
     @Override
     public DownloadHelper getDownloadHelper(SketchPictures sketchPictures, String uri) {
-        return null;
+        return new DefaultDownloadHelper(sketchPictures, uri);
     }
 
     @Override
     public LoadHelper getLoadHelper(SketchPictures sketchPictures, String uri) {
-        return null;
+        return new DefaultLoadHelper(sketchPictures,uri);
     }
 
     @Override
     public DisplayHelper getDisplayHelper(SketchPictures sketchPictures, String uri, SketchImageViewInterface sketchImageViewInterface) {
-        return null;
+        if(this.displayHelper == null){
+            return new DefaultDisplayHelper(sketchPictures, uri, sketchImageViewInterface);
+        }else{
+            DisplayHelper displayHelper = this.displayHelper;
+            this.displayHelper = null;
+            displayHelper.init(sketchPictures, uri, sketchImageViewInterface);
+            return displayHelper;
+        }
     }
 
     @Override

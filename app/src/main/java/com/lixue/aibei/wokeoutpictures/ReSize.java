@@ -27,6 +27,13 @@ public class ReSize implements ImageSize {
         this(width,height);
         this.scaleType = scaleType;
     }
+    public ImageView.ScaleType getScaleType() {
+        return scaleType;
+    }
+
+    public void setScaleType(ImageView.ScaleType scaleType) {
+        this.scaleType = scaleType;
+    }
 
     @Override
     public int getWidth() {

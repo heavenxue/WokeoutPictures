@@ -1,6 +1,5 @@
 package com.lixue.aibei.wokeoutpictures;
 
-import android.webkit.DownloadListener;
 
 import com.lixue.aibei.wokeoutpictures.enums.RequestLevel;
 import com.lixue.aibei.wokeoutpictures.request.Request;
@@ -20,7 +19,7 @@ public interface DownloadHelper {
      * 设置监听器
      * @return DownloadHelper
      */
-    DownloadHelper listener(DownloadListener downloadListener);
+    DownloadHelper listener(DownLoadListener downloadListener);
 
     /**
      * 关闭磁盘缓存

@@ -1,8 +1,8 @@
 package com.lixue.aibei.wokeoutpictures.request;
 
 import android.os.Message;
-import android.webkit.DownloadListener;
 
+import com.lixue.aibei.wokeoutpictures.DownLoadListener;
 import com.lixue.aibei.wokeoutpictures.ProgressListener;
 import com.lixue.aibei.wokeoutpictures.SketchPictures;
 import com.lixue.aibei.wokeoutpictures.enums.CancelCause;
@@ -55,7 +55,7 @@ public interface DownloadRequest extends Request,RequestRunManager {
      * 设置下载监听器
      * @param downloadListener
      */
-    void setDownloadListener(DownloadListener downloadListener);
+    void setDownloadListener(DownLoadListener downloadListener);
 
     /**设置请求Level
      * @param requestLevel

@@ -62,6 +62,11 @@ public class ImageHolder {
         return this;
     }
 
+    /**
+     * 获取可回收的图像
+     * @param context
+     * @return
+     */
     public RecycleBitmapDrawable getRecycleBitmapDrawable(Context context){
         if(drawable != null && !drawable.isRecyled()){
             return drawable;

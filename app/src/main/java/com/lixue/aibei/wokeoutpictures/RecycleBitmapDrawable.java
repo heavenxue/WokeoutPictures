@@ -91,7 +91,7 @@ public class RecycleBitmapDrawable extends BitmapDrawable implements RecycleDraw
     @Override
     public boolean isRecyled() {
         Bitmap bitmap = getBitmap();
-
+        //判断是否有被标记回收
         return bitmap == null || bitmap.isRecycled();
     }
 
