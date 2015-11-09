@@ -7,6 +7,7 @@ import com.lixue.aibei.wokeoutpictures.request.DisplayRequest;
 import java.lang.ref.WeakReference;
 
 /**
+ * 绑定具有固定大小的可回收的图像
  * Created by Administrator on 2015/11/6.
  */
 public class BindFixedRecycleBitmapDrawable extends FixedRecycleBitmapDrawable {

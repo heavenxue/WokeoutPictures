@@ -1,6 +1,7 @@
 package com.lixue.aibei.wokeoutpictures;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import com.lixue.aibei.wokeoutpictures.cache.DiskCache;
@@ -9,6 +10,10 @@ import com.lixue.aibei.wokeoutpictures.cache.LruMemoryCache;
 import com.lixue.aibei.wokeoutpictures.cache.MemoryCache;
 import com.lixue.aibei.wokeoutpictures.decode.DefaultImageDecoder;
 import com.lixue.aibei.wokeoutpictures.decode.ImageDecoder;
+import com.lixue.aibei.wokeoutpictures.download.HttpClientImageDownloader;
+import com.lixue.aibei.wokeoutpictures.download.HttpUrlConnectionImageDownloader;
+import com.lixue.aibei.wokeoutpictures.download.ImageDownloader;
+import com.lixue.aibei.wokeoutpictures.process.DeFaultImageProcessor;
 import com.lixue.aibei.wokeoutpictures.process.ImageProcessor;
 
 /**
@@ -22,14 +27,16 @@ public class Configuration {
     private MemoryCache memoryCache;//内存缓存器
     private ImageDecoder imageDecoder;//图片解码器
     private ImageProcessor imageProcessor;//图片处理器
+    private ImageDownloader imageDownloader;//图片下载器
     private HelperFactory helperFactory;    // 协助器工厂
+    private ImageSizeCalculator imageSizeCalculator ;//图像尺寸计算器
     private RequestFactory requestFactory;  // 请求工厂
+    private MemoryCache placeholderImageMemoryCache;//内存缓存器
+    private ResizeCalculator resizeCalculator;
 
     private boolean pauseLoad;   // 暂停加载新图片，开启后将只从内存缓存中找寻图片，只影响display请求
     private boolean pauseDownload;   // 暂停下载新图片，开启后将不再从网络下载新图片，只影响display请求
     private boolean isDecodeGifImage = true;//是否解码Gif图像
-    private ImageSizeCalculator imageSizeCalculator ;//图像尺寸计算器
-    private MemoryCache placeholderImageMemoryCache;//内存缓存器
     private boolean isLowQualityImage;//是否是低质量的图片
     private boolean isCacheInDisk;//是否缓存到sd卡
 
@@ -40,6 +47,42 @@ public class Configuration {
         //将最大内存的八分之一作为内存缓存的最大存储空间
         memoryCache = new LruMemoryCache(context,(int) (Runtime.getRuntime().maxMemory()/8));
         imageDecoder = new DefaultImageDecoder();
+        helperFactory = new DefaultHelperFactory();
+        imageProcessor = new DeFaultImageProcessor();
+        resizeCalculator = new DefaultResizeCalculator();
+        if (Build.VERSION.SDK_INT >= 9){
+            imageDownloader = new HttpUrlConnectionImageDownloader();
+        }else{
+            imageDownloader = new HttpClientImageDownloader();
+        }
+    }
+
+    /**
+     * 获取Resize计算器
+     * @return ResizeCalculator
+     */
+    public ResizeCalculator getResizeCalculator() {
+        return resizeCalculator;
+    }
+
+    /**
+     * 设置Resize计算器
+     * @param resizeCalculator
+     * @return
+     */
+    public Configuration setResizeCalculator(ResizeCalculator resizeCalculator){
+        if (resizeCalculator != null){
+            this.resizeCalculator = resizeCalculator;
+            if (SketchPictures.isDebugMode()){
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(NAME).append(" :").append("set").append(" - ");
+                stringBuilder.append("resizeCalculator").append(" (");
+                resizeCalculator.appendIdentifier(stringBuilder);
+                stringBuilder.append(")");
+                Log.i(SketchPictures.TAG, stringBuilder.toString());
+            }
+        }
+        return this;
     }
 
     /**
@@ -98,6 +141,10 @@ public class Configuration {
         return this;
     }
 
+    /**
+     * 获取上下文
+     * @return
+     */
     public Context getContext() {
         return context;
     }
@@ -175,6 +222,14 @@ public class Configuration {
      */
     public MemoryCache getMemoryCache(){
         return memoryCache;
+    }
+
+    /**
+     * 得到磁盘缓存器
+     * @return
+     */
+    public DiskCache getDiskCache(){
+        return diskCache;
     }
 
 }
