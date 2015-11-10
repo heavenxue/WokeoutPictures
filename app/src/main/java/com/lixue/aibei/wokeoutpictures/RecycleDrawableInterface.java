@@ -68,7 +68,7 @@ public interface RecycleDrawableInterface {
      * 获取信息
      * @return
      */
-    String getInfo();
+     String getInfo();
 
     /**
      * 是否可以被回收

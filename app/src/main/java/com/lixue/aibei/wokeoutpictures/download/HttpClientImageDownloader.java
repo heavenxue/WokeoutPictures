@@ -33,9 +33,14 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.Map;
@@ -196,7 +201,102 @@ public class HttpClientImageDownloader implements ImageDownloader {
         return readData(request, response,contentLength);
     }
     private DownLoadResult readData(DownloadRequest request, HttpResponse httpResponse, int contentLength){
-        return null;
+        // 生成缓存文件和临时缓存文件
+        File tmpFile = null;//临时文件
+        File cacheFile = null;//缓存文件
+        if (request.isCacheInDisk()){
+            cacheFile = request.getSketch().getConfiguration().getDiskCache().generateCacheFile(request.getUri());
+            if (cacheFile != null && request.getSketch().getConfiguration().getDiskCache().applyForSpace(cacheFile.length())){
+                tmpFile = new File(cacheFile.getPath() + ".temp");
+                if (!SketchUtils.CreateFile(tmpFile)){
+                    tmpFile = null;
+                    cacheFile = null;
+                }
+            }
+        }
+        //获取输入流后判断是否取消
+        InputStream inputStream = null;
+        if (httpResponse != null){
+            try {
+                inputStream = httpResponse.getEntity().getContent();
+            } catch (IOException e) {
+                if (tmpFile != null && tmpFile.exists() && !tmpFile.delete() && SketchPictures.isDebugMode()){
+                    Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "delete temp download file failed", " - ", "tempFilePath:", tmpFile.getPath(), " - ", request.getName()));
+                }
+                e.printStackTrace();
+            }
+        }
+        if (request.isCanceled()){
+            HttpUrlConnectionImageDownloader.close(inputStream);
+            if (SketchPictures.isDebugMode()){
+                Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "canceled", " - ", "get input stream after", " - ", request.getName()));
+            }
+            if (tmpFile != null && tmpFile.exists() && !tmpFile.delete() && SketchPictures.isDebugMode()){
+                Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "delete temp download file failed", " - ", "tempFilePath:", tmpFile.getPath(), " - ", request.getName()));
+            }
+            return null;
+        }
+
+        // 当不需要将数据缓存到本地的时候就使用ByteArrayOutputStream来存储数据
+        OutputStream outputStream = null;
+        if (!request.isCacheInDisk()){
+            if (tmpFile != null){
+                try {
+                    outputStream = new BufferedOutputStream(new FileOutputStream(tmpFile,false),BUFFER_SIZE);
+                } catch (FileNotFoundException e) {
+                    HttpUrlConnectionImageDownloader.close(outputStream);
+                    e.printStackTrace();
+                }
+            }else{
+                outputStream = new ByteArrayOutputStream(contentLength);
+            }
+        }
+        // 读取数据
+        int completedLength = 0;
+        boolean exception =false;
+        try {
+            completedLength = HttpUrlConnectionImageDownloader.readData(inputStream,outputStream,request,contentLength,processCallbackNumber);
+        } catch (IOException e) {
+            exception = true;
+            e.printStackTrace();
+        }finally {
+            HttpUrlConnectionImageDownloader.close(inputStream);
+            HttpUrlConnectionImageDownloader.close(outputStream);
+            if (exception && tmpFile != null && tmpFile.exists() && !tmpFile.delete() && SketchPictures.isDebugMode()){
+                Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "delete temp download file failed", " - ", "tempFilePath:", tmpFile.getPath(), " - ", request.getName()));
+            }
+        }
+        if (request.isCanceled()) {
+            if (SketchPictures.isDebugMode()){
+                Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "canceled", " - ", "read data after", " - ", request.getName()));
+            }
+            if (tmpFile != null && tmpFile.exists() && !tmpFile.delete() && SketchPictures.isDebugMode()){
+                Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "delete temp download file failed", " - ", "tempFilePath:", tmpFile.getPath(), " - ", request.getName()));
+            }
+            return null;
+        }
+
+        if (SketchPictures.isDebugMode()){
+            Log.i(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "download success", " - ", "fileLength:", String.valueOf(completedLength), "/", String.valueOf(contentLength), " - ", request.getName()));
+        }
+        //转换结果
+        if(tmpFile != null && tmpFile.exists()){
+            if(!tmpFile.renameTo(cacheFile)){
+                if(SketchPictures.isDebugMode()){
+                    Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "rename failed", " - ", "tempFilePath:", tmpFile.getPath(), " - ", request.getName()));
+                }
+                if (!tmpFile.delete() && SketchPictures.isDebugMode()) {
+                    Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "delete temp download file failed", " - ", "tempFilePath:", tmpFile.getPath(), " - ", request.getName()));
+                }
+                return null;
+            }
+
+            return DownLoadResult.createByFile(cacheFile, true);
+        }else if(outputStream instanceof ByteArrayOutputStream){
+            return DownLoadResult.createByArray(((ByteArrayOutputStream) outputStream).toByteArray(), true);
+        }else{
+            return null;
+        }
     }
 
     @Override

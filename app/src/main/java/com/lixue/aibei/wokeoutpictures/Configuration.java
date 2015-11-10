@@ -2,6 +2,9 @@ package com.lixue.aibei.wokeoutpictures;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 import com.lixue.aibei.wokeoutpictures.cache.DiskCache;
@@ -10,11 +13,16 @@ import com.lixue.aibei.wokeoutpictures.cache.LruMemoryCache;
 import com.lixue.aibei.wokeoutpictures.cache.MemoryCache;
 import com.lixue.aibei.wokeoutpictures.decode.DefaultImageDecoder;
 import com.lixue.aibei.wokeoutpictures.decode.ImageDecoder;
+import com.lixue.aibei.wokeoutpictures.display.DefaultImageDisplayer;
 import com.lixue.aibei.wokeoutpictures.download.HttpClientImageDownloader;
 import com.lixue.aibei.wokeoutpictures.download.HttpUrlConnectionImageDownloader;
 import com.lixue.aibei.wokeoutpictures.download.ImageDownloader;
+import com.lixue.aibei.wokeoutpictures.execute.DefaultRequestExecutor;
+import com.lixue.aibei.wokeoutpictures.execute.RequestExecutor;
 import com.lixue.aibei.wokeoutpictures.process.DeFaultImageProcessor;
 import com.lixue.aibei.wokeoutpictures.process.ImageProcessor;
+import com.lixue.aibei.wokeoutpictures.request.DownloadRequest;
+
 
 /**
  * 配置文件
@@ -23,16 +31,23 @@ import com.lixue.aibei.wokeoutpictures.process.ImageProcessor;
 public class Configuration {
     private static final String NAME = "Configuration";
     private Context context;
+    private Handler handler;
+
     private DiskCache diskCache;    // 磁盘缓存器
     private MemoryCache memoryCache;//内存缓存器
     private ImageDecoder imageDecoder;//图片解码器
     private ImageProcessor imageProcessor;//图片处理器
     private ImageDownloader imageDownloader;//图片下载器
-    private HelperFactory helperFactory;    // 协助器工厂
     private ImageSizeCalculator imageSizeCalculator ;//图像尺寸计算器
+    private DefaultImageDisplayer defaultImageDisplayer;//默认图片显示器
+
     private RequestFactory requestFactory;  // 请求工厂
+    private HelperFactory helperFactory;    // 协助器工厂
     private MemoryCache placeholderImageMemoryCache;//内存缓存器
     private ResizeCalculator resizeCalculator;
+    private RequestExecutor requestExecutor;//请求执行器
+
+
 
     private boolean pauseLoad;   // 暂停加载新图片，开启后将只从内存缓存中找寻图片，只影响display请求
     private boolean pauseDownload;   // 暂停下载新图片，开启后将不再从网络下载新图片，只影响display请求
@@ -48,6 +63,7 @@ public class Configuration {
         memoryCache = new LruMemoryCache(context,(int) (Runtime.getRuntime().maxMemory()/8));
         imageDecoder = new DefaultImageDecoder();
         helperFactory = new DefaultHelperFactory();
+        requestFactory = new DeafaultRequestFactory();
         imageProcessor = new DeFaultImageProcessor();
         resizeCalculator = new DefaultResizeCalculator();
         if (Build.VERSION.SDK_INT >= 9){
@@ -55,6 +71,20 @@ public class Configuration {
         }else{
             imageDownloader = new HttpClientImageDownloader();
         }
+        this.requestExecutor = new DefaultRequestExecutor.Builder().build();
+
+        this.handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if(msg.obj instanceof DownloadRequest){
+                    ((DownloadRequest) msg.obj).invokeInMainThread(msg);
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        });
+
     }
 
     /**
@@ -232,4 +262,19 @@ public class Configuration {
         return diskCache;
     }
 
+    public RequestExecutor getRequestExecutor(){
+        return requestExecutor;
+    }
+    public Handler getHandler(){
+        return handler;
+    }
+    public ImageDownloader getImageDownloader(){
+        return imageDownloader;
+    }
+    public ImageDecoder getImageDecoder(){
+        return  imageDecoder;
+    }
+    public DefaultImageDisplayer getDefaultImageDisplayer(){
+        return defaultImageDisplayer;
+    }
 }

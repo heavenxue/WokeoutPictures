@@ -172,15 +172,33 @@ public class RecycleBitmapDrawable extends BitmapDrawable implements RecycleDraw
      * @param bitmap
      * @return
      */
-    private int getByteCount(Bitmap bitmap){
-        int bitmapBytes = 0;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-            bitmapBytes = bitmap.getAllocationByteCount();
-        }else if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1){
-            bitmapBytes = bitmap.getByteCount();
+//    private int getByteCount(Bitmap bitmap){
+//        int bitmapBytes = 0;
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+//            bitmapBytes = bitmap.getAllocationByteCount();
+//        }else if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1){
+//            bitmapBytes = bitmap.getByteCount();
+//        }else{
+//            bitmapBytes = bitmap.getRowBytes() * bitmap.getHeight();
+//        }
+//        return bitmapBytes;
+//    }
+    public static String getInfo(Bitmap bitmap, String mimeType) {
+        if(bitmap != null){
+            return SketchUtils.concat("Bitmap(mimeType=", mimeType, "; hashCode=", Integer.toHexString(bitmap.hashCode()), "; size=", bitmap.getWidth(), "x", bitmap.getHeight(), "; config=", bitmap.getConfig() != null ? bitmap.getConfig().name() : null, "; byteCount=", getByteCount(bitmap), ")");
         }else{
-            bitmapBytes = bitmap.getRowBytes() * bitmap.getHeight();
+            return null;
         }
-        return bitmapBytes;
+    }
+    public static int getByteCount(Bitmap bitmap) {
+        if(bitmap == null){
+            return 0;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return bitmap.getAllocationByteCount();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            return  bitmap.getByteCount();
+        }else{
+            return bitmap.getRowBytes() * bitmap.getHeight();
+        }
     }
 }
