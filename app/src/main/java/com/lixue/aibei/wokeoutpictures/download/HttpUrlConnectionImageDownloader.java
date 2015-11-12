@@ -105,6 +105,7 @@ public class HttpUrlConnectionImageDownloader implements ImageDownloader {
         //打开连接
         HttpURLConnection httpURLConnection = null;
         String url = request.getUri();
+        Log.i(NAME,"下载uri为:" + url);
         try {
             httpURLConnection = openUrlConnection(url);
         } catch (IOException e) {

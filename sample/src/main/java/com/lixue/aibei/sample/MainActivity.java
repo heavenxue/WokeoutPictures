@@ -1,17 +1,28 @@
-package com.lixue.aibei.wokeoutpictures;
+package com.lixue.aibei.sample;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.lixue.aibei.wokeoutpictures.SketchImageView;
+
 
 public class MainActivity extends ActionBarActivity {
+    private SketchImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageView = (SketchImageView) findViewById(R.id.image);
+
+        SketchManager sketchManager = new SketchManager(getBaseContext());
+        sketchManager.initConfig();
+        sketchManager.initDisplayOptions();
+        imageView.displayResourceImage(R.drawable.image_failure);
+//        imageView.displayIamge("http://ff.topit.me/f/7e/74/11067302217aa747efo.jpg");
+
     }
 
     @Override

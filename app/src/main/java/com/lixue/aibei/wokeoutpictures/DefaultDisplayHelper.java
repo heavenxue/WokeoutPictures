@@ -112,7 +112,9 @@ public class DefaultDisplayHelper implements DisplayHelper {
 
         if(sketchImageViewInterface != null){
             this.scaleType = sketchImageViewInterface.getScaleType();
-            this.fixedSize = sketch.getConfiguration().getImageSizeCalculator().caculateImageFixedSize(sketchImageViewInterface);
+            if (sketch.getConfiguration().getImageSizeCalculator() != null){
+                this.fixedSize = sketch.getConfiguration().getImageSizeCalculator().caculateImageFixedSize(sketchImageViewInterface);
+            }
             this.maxSize = sketch.getConfiguration().getImageSizeCalculator().caculateImageMaxSize(sketchImageViewInterface);
 
             this.sketchImageViewInterface.onDisplay();

@@ -115,7 +115,8 @@ public class SketchPictures {
      * @return  DisplayHelper 你可以继续设置一些参数，最后调用fire()方法开始显示
      */
     public DisplayHelper display(String uri,SketchImageViewInterface sketchImageViewInterface){
-        return configuration.getHelperFactory().getDisplayHelper(this, uri, sketchImageViewInterface);
+        DisplayHelper displayHelper = configuration.getHelperFactory().getDisplayHelper(this, uri, sketchImageViewInterface);
+        return displayHelper == null ?new DefaultDisplayHelper(this,uri,sketchImageViewInterface) :displayHelper;
     }
 
     /**显示asset文件夹中的图片
