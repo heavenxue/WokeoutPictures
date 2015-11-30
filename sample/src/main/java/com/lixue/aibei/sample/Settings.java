@@ -63,7 +63,7 @@ public class Settings {
     }
 
     private void apply(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD){//2.3以上
             editor.apply();
         }else{
             editor.commit();

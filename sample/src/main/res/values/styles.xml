@@ -4,5 +4,31 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+        <style name="TextAppearance_ImageTitle">
+            <item name="android:background">@drawable/shape_linear_gradient_transparent_to_black</item>
+            <item name="android:textColor">@android:color/white</item>
+            <item name="android:padding">@dimen/image_title_padding</item>
+            <item name="android:gravity">left</item>
+            <item name="android:singleLine">true</item>
+        </style>
 
+        <style name="TextAppearance_ImageName">
+            <item name="android:background">@drawable/shape_round_corners_black_translucent</item>
+            <item name="android:textColor">@android:color/white</item>
+            <item name="android:paddingLeft">8dp</item>
+            <item name="android:paddingTop">4dp</item>
+            <item name="android:paddingRight">8dp</item>
+            <item name="android:paddingBottom">4dp</item>
+            <item name="android:gravity">center</item>
+            <item name="android:singleLine">true</item>
+        </style>
+
+        <style name="menu_item">
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">50dp</item>
+            <item name="android:paddingLeft">16dp</item>
+            <item name="android:paddingRight">16dp</item>
+            <item name="android:gravity">center_vertical</item>
+            <item name="android:background">@drawable/selector_list_item</item>
+        </style>
 </resources>
