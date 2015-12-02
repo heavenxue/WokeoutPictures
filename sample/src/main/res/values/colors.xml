@@ -9,4 +9,6 @@
     <color name="window_background_end">#040404</color>
 
     <color name="list_item_background_pressed">#33FFFFFF</color>
+    <color name="state_menu_item_selected">#3355ff00</color>
+    <drawable name="blue">#770000ff</drawable>
 </resources>

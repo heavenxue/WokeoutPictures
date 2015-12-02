@@ -7,20 +7,12 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
 
-import com.lixue.aibei.sample.Util.DeviceUtils;
-import com.lixue.aibei.wokeoutpictures.LoadListener;
 import com.lixue.aibei.wokeoutpictures.RecycleBitmapDrawable;
 import com.lixue.aibei.wokeoutpictures.RecycleDrawableInterface;
 import com.lixue.aibei.wokeoutpictures.SketchPictures;
-import com.lixue.aibei.wokeoutpictures.enums.CancelCause;
-import com.lixue.aibei.wokeoutpictures.enums.FailCause;
-import com.lixue.aibei.wokeoutpictures.enums.ImageFrom;
-import com.lixue.aibei.wokeoutpictures.request.Request;
 
 /**
  * Created by Administrator on 2015/11/30.
@@ -86,7 +78,6 @@ public class WindowBackgroundManager {
     public static class WindowBackgroundLoader {
         private Context context;
         private String windowBackgroundImageUri;
-        private Request loadBackgroundRequest;
         private OnSetWindowBackgroundListener onSetWindowBackgroundListener;
         private boolean userVisible;
 
@@ -95,73 +86,8 @@ public class WindowBackgroundManager {
             this.onSetWindowBackgroundListener = onSetWindowBackgroundListener;
         }
 
-        public void restore(){
-            if(onSetWindowBackgroundListener != null && windowBackgroundImageUri != null){
-                load(windowBackgroundImageUri);
-            }
-        }
-
         public void detach(){
-            cancel();
             onSetWindowBackgroundListener = null;
-        }
-
-        public void cancel(){
-            if(loadBackgroundRequest != null && !loadBackgroundRequest.isFinished()){
-                loadBackgroundRequest.cancel();
-            }
-        }
-
-        public void setUserVisible(boolean userVisible) {
-            this.userVisible = userVisible;
-            if(userVisible && windowBackgroundImageUri != null){
-                load(windowBackgroundImageUri);
-            }
-        }
-
-        public void load(final String imageUri){
-            if(imageUri == null || imageUri.equals(onSetWindowBackgroundListener.getCurrentBackgroundUri())){
-                return;
-            }
-            this.windowBackgroundImageUri = imageUri;
-            if(loadBackgroundRequest != null && !loadBackgroundRequest.isFinished()){
-                loadBackgroundRequest.cancel();
-            }
-            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            int resizeWidth = displayMetrics.widthPixels;
-            int resizeHeight = displayMetrics.heightPixels;
-            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
-                resizeHeight -= DeviceUtils.getStatusBarHeight(context.getResources());
-            }
-            resizeWidth /= 2;
-            resizeHeight /= 2;
-            loadBackgroundRequest =SketchPictures.getInstance(context).load(imageUri, new LoadListener() {
-                @Override
-                public void onStarted() {
-
-                }
-
-                @Override
-                public void onCompleted(Drawable gifDrawable, ImageFrom imageFrom, String mimeType) {
-                    if (onSetWindowBackgroundListener != null) {
-                        if (userVisible) {
-                            onSetWindowBackgroundListener.onSetWindowBackground(imageUri, gifDrawable);
-                        } else {
-                            ((RecycleDrawableInterface) gifDrawable).recyle();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailed(FailCause failCause) {
-
-                }
-
-                @Override
-                public void onCancled(CancelCause cancelCause) {
-
-                }
-            }).resize(resizeWidth, resizeHeight).options(OptionsType.WINDOW_BACKGROUND).commit();
         }
     }
 }

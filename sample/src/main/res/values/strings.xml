@@ -3,4 +3,24 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="drawer_open">打开</string>
+    <string name="drawer_close">关闭</string>
+
+    <string name="loadingLater">正在加载%s，请稍后…</string>
+    <string name="ingLater">正在%s，请稍后…</string>
+    <string name="title_activity_star_home">StarHomeActivity</string>
+    <string name="title_activity_my">MyActivity</string>
+    <string name="title_activity_grid_layout1">GridLayout1</string>
+    <string name="title_activity_grid_layout3">GridLayout3</string>
+    <string name="title_activity_grid_layout2">GridLayout2</string>
+
+
+    <string name="grid_layout_1">GridLayout/1. Simple Form</string>
+    <string name="grid_layout_2">GridLayout/2. Form (XML)</string>
+    <string name="grid_layout_3">GridLayout/3. Form (Java)</string>
+    <string name="grid_layout_1_instructions">Type here:</string>
+    <string name="grid_layout_1_ok">Ok</string>
+    <string name="grid_layout_1_cancel">Cancel</string>
+    <string name="title_activity_home">HomeActivity</string>
+
 </resources>

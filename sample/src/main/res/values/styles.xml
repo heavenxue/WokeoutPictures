@@ -1,9 +1,5 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
         <style name="TextAppearance_ImageTitle">
             <item name="android:background">@drawable/shape_linear_gradient_transparent_to_black</item>
             <item name="android:textColor">@android:color/white</item>

@@ -10,7 +10,7 @@
         android:name=".MyApplication"
         >
         <activity
-            android:name="com.lixue.aibei.sample.MainActivity"
+            android:name="com.lixue.aibei.sample.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

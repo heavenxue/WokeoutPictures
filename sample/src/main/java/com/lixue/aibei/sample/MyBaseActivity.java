@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -13,10 +15,20 @@ import android.view.WindowManager;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class MyBaseActivity extends ActionBarActivity {
+public abstract class MyBaseActivity extends AppCompatActivity {
+    protected Toolbar toolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar != null){
+            onPreSetSupportActionBar();
+            setSupportActionBar(toolbar);
+            toolbar.setLogo(R.mipmap.image1);
+            toolbar.setNavigationIcon(R.mipmap.ic_more);
+            onPostSetSupportActionBar();
+        }
     }
 
     @Override
@@ -26,15 +38,41 @@ public class MyBaseActivity extends ActionBarActivity {
     }
 
     @Override
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        setTransparentStatusBar();
+        super.setContentView(view, params);
+    }
+
+    @Override
     public void setContentView(View view) {
         setTransparentStatusBar();
         super.setContentView(view);
     }
 
+    protected void onPreSetSupportActionBar(){
+
+    }
+
+    protected void onPostSetSupportActionBar(){
+
+    }
+
     @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        setTransparentStatusBar();
-        super.setContentView(view, params);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        if(!isDisableSetFitsSystemWindows()){
+            setFitsSystemWindows();
+        }
     }
 
     /**
