@@ -105,7 +105,7 @@ public class DefaultImageDecoder implements ImageDecoder{
         options.inJustDecodeBounds = false;//不直接存入内存，先读
         //通过文件类型设置最好的图像配置
         loadRequest.setMimeType(options.outMimeType);
-        ImageFormat imageFormat = ImageFormat.valueOf(loadRequest.getMimeType());
+        ImageFormat imageFormat = ImageFormat.valueOfMimeType(options.outMimeType);
         if(imageFormat != null){
             options.inPreferredConfig = imageFormat.getConfig(loadRequest.isLowQualityImage());
         }
@@ -140,7 +140,7 @@ public class DefaultImageDecoder implements ImageDecoder{
                 options.inSampleSize = loadRequest.getSketch().getConfiguration().getImageSizeCalculator().calculateInSampleSize(options.outWidth,options.outHeight,maxSize.getWidth(),maxSize.getWidth());
             }
             //decoding and exclude the width or height of 1 pixel image排除一像素的宽或高
-            decodeHelper.decode(options);
+            bitmap = decodeHelper.decode(options);
             if(bitmap != null && (bitmap.getWidth() == 1 || bitmap.getHeight() == 1)){
                 if(SketchPictures.isDebugMode()){
                     Log.w(SketchPictures.TAG, SketchUtils.concat(NAME, " - ", "bitmap width or height is 1px", " - ",

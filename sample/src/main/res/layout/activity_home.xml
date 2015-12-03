@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
   android:orientation="vertical"
-    tools:context="com.lixue.aibei.sample.HomeActivity">
+    tools:context="com.lixue.aibei.sample.DrawerLayoutActivity">
 
     <include layout="@layout/include_toolbar" />
     <android.support.v4.widget.DrawerLayout
@@ -12,16 +12,25 @@
         android:layout_height="match_parent">
         <!--内容区-->
         <FrameLayout
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></FrameLayout>
+        <!--左侧区-->
+        <FrameLayout
             android:id="@+id/content_left"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#ffffffff"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             ></FrameLayout>
+        <!--右侧区-->
         <FrameLayout
-            android:id="@+id/content_container"
+            android:id="@+id/content_right"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#ffffffff"
+            android:layout_gravity="right"
             ></FrameLayout>
     </android.support.v4.widget.DrawerLayout>
 

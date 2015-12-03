@@ -30,8 +30,7 @@ public class MyActivity extends ListActivity {
             path = "";
         }
 
-        setListAdapter(new SimpleAdapter(this, getData(path),
-                android.R.layout.simple_list_item_1, new String[] { "title" }, new int[] { android.R.id.text1 }));
+        setListAdapter(new SimpleAdapter(this, getData(path), android.R.layout.simple_list_item_1, new String[] { "title" }, new int[] { android.R.id.text1 }));
         getListView().setTextFilterEnabled(true);
     }
 

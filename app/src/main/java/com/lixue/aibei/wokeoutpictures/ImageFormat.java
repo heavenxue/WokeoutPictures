@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * 文件格式
  * Created by Administrator on 2015/11/4.
  */
-public enum  ImageFormat {
+public enum ImageFormat {
     PNG("image/png", Bitmap.Config.ARGB_8888, Bitmap.Config.ARGB_4444),
     JPEG("image/jpeg", Bitmap.Config.RGB_565, Bitmap.Config.RGB_565),
     GIF("image/gif", Bitmap.Config.ARGB_8888, Bitmap.Config.ARGB_4444),

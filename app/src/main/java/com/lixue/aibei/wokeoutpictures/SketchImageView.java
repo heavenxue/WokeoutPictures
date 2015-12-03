@@ -112,6 +112,7 @@ public class SketchImageView extends ImageView implements SketchImageViewInterfa
         initImageShapePath();
     }
 
+    /**画了个红三角（左上角的位置）**/
     protected void initFromFlag(){
         if(!showFromFlag){
             return;

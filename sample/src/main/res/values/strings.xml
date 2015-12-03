@@ -22,5 +22,7 @@
     <string name="grid_layout_1_ok">Ok</string>
     <string name="grid_layout_1_cancel">Cancel</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_sliding_panele_layout">SlidingPaneleLayoutActivity</string>
+    <string name="title_activity_sample">SampleActivity</string>
 
 </resources>

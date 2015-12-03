@@ -393,10 +393,6 @@ public class DefaultDisplayRequest implements DisplayRequest,Runnable{
 
     }
 
-    public void setDecodeGifImage(boolean decodeGifImage) {
-        this.decodeGifImage = decodeGifImage;
-    }
-
     @Override
     public void setDownloadListener(DownLoadListener downloadListener) {
 

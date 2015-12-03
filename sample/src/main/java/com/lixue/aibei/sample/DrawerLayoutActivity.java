@@ -1,9 +1,11 @@
 package com.lixue.aibei.sample;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -12,20 +14,22 @@ import android.view.Gravity;
 
 import com.lixue.aibei.sample.fragment.ContentFragment;
 import com.lixue.aibei.sample.fragment.LeftFragment;
+import com.lixue.aibei.sample.fragment.RightFragment;
 
 import java.util.List;
 
 
-public class HomeActivity extends MyBaseActivity{
+public class DrawerLayoutActivity extends MyBaseActivity{
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout mDrawerLayout;
 
     private LeftFragment leftFragment;
     private ContentFragment contentFragment;
+    private RightFragment rightFragment;
 
     private String mTitle;
 
-    private static final String TAG = "HomeActivity";
+    private static final String TAG = DrawerLayoutActivity.class.getSimpleName();
     private static final String KEY_TITLLE = "key_title";
 
 
@@ -56,11 +60,17 @@ public class HomeActivity extends MyBaseActivity{
             fragmentManager.beginTransaction().add(R.id.content_left,leftFragment).commit();
         }
 
+        rightFragment = (RightFragment) fragmentManager.findFragmentByTag(mTitle);
+        if (rightFragment == null){
+            rightFragment = new RightFragment();
+            fragmentManager.beginTransaction().add(R.id.content_right,rightFragment).commit();
+        }
+
         //隐藏别的fragment，如果存在的话
         List<Fragment> fragments = fragmentManager.getFragments();
         if (fragments != null){
             for (Fragment fg : fragments){
-                if (fg == leftFragment || fg == contentFragment){
+                if (fg == leftFragment || fg == contentFragment||fg == rightFragment){
                     fragmentManager.beginTransaction().hide(fg).commit();
                 }
             }
@@ -73,7 +83,7 @@ public class HomeActivity extends MyBaseActivity{
                 FragmentManager fm = getSupportFragmentManager();
                 ContentFragment cf = (ContentFragment) fm.findFragmentByTag(title);
                 if (cf == contentFragment){
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
                     return;
                 }
                 FragmentTransaction fst = fm.beginTransaction();
@@ -89,7 +99,32 @@ public class HomeActivity extends MyBaseActivity{
                 contentFragment = cf;
                 mTitle = title;
                 toolbar.setTitle(mTitle);
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        rightFragment.setmMenuItemSelectedListener(new RightFragment.MyItemSelectedListener() {
+            @Override
+            public void menuItemSelected(String s) {
+                FragmentManager fm = getSupportFragmentManager();
+                ContentFragment cf = (ContentFragment) fm.findFragmentByTag(s);
+                if (cf == contentFragment){
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                    return;
+                }
+                FragmentTransaction fst = fm.beginTransaction();
+                fst.hide(contentFragment);
+
+                if (cf == null){
+                    cf = ContentFragment.newInstance(s);
+                    fst.add(R.id.content_container,cf,s);
+                }else{
+                    fst.show(cf);
+                }
+                fst.commit();
+                contentFragment = cf;
+                mTitle = s;
+                toolbar.setTitle(mTitle);
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
     }
@@ -135,5 +170,9 @@ public class HomeActivity extends MyBaseActivity{
         outState.putString(KEY_TITLLE, mTitle);
     }
 
-
+    @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+        drawerToggle.syncState();
+    }
 }

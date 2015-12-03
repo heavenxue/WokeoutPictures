@@ -1,12 +1,11 @@
 package com.lixue.aibei.sample.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lixue.aibei.sample.R;
@@ -20,7 +19,7 @@ import com.lixue.aibei.sample.R;
  * Activities containing this fragment MUST implement the {@link }
  * interface.
  */
-public class LeftFragment extends ListFragment implements AbsListView.OnItemClickListener {
+public class LeftFragment extends ListFragment {
     private static final int SIZE_MENU_ITEM = 3;
 
     private MenuItem[] mItems = new MenuItem[SIZE_MENU_ITEM];
@@ -31,7 +30,7 @@ public class LeftFragment extends ListFragment implements AbsListView.OnItemClic
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mInflater = LayoutInflater.from(getActivity());
@@ -55,17 +54,13 @@ public class LeftFragment extends ListFragment implements AbsListView.OnItemClic
         setListAdapter(mAdapter = new LeftMenuAdapter(getActivity(), mItems));
     }
 
-
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        super.onListItemClick((ListView) parent, view, position, id);
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
         if (mMenuItemSelectedListener != null) {
             mMenuItemSelectedListener.menuItemSelected(((MenuItem) getListAdapter().getItem(position)).text);
         }
-
         mAdapter.setSelected(position);
-
-
     }
 
     //选择回调的接口
